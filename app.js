@@ -15,14 +15,15 @@ let connection = mysql.createConnection({
     user: "root",
 
     // set password
-    password: "Solameandstuff1377002",
-    database: "employeedb"
+    password: "password",
+    database: "employeedb",
+    insecureAuth: true
 
 });
 
 connection.connect(function (error) {
     if (error) throw error;
-    throwTitle();
+    // throwTitle();
     console.log("connected as: " + connection.threadId + "\n");
     runApp();
 });
@@ -96,12 +97,13 @@ function addDept() {
         name: "department"
     }]).then(function (response) {
         const department = response.department;
-        const query = "INSERT INTO departments (name)VALUES ?;"
-        connection.query(query, {
-            department: department
-        }, function (error, res) {
+        const query = "INSERT INTO departments (name) VALUES (?);"
 
-        })
+        connection.query(query, department,
+            function (error, res) {
+                console.log("added " + department);
+                runApp();
+            })
     })
 }
 
@@ -126,14 +128,10 @@ function addRole() {
         const role = response.role;
         const salary = response.salary;
         const department = response.department;
-        const query = "INSERT INTO roles (title, salary, department_id)VALUES ?, ?, ?;"
-        connection.query(query, {
-                role: role,
-                salary: salary,
-                department: department
-            },
+        const query = "INSERT INTO roles (title, salary, department_id)VALUES (?, ?, ?);"
+        connection.query(query, role, salary, department,
             function (error, res) {
-
+                console.log("added " + role);
             })
     })
 }
@@ -178,22 +176,22 @@ function addEmployee() {
     })
 }
 
-function throwTitle() {
-    console.log(`
-================================================================
-===      ______                 _                            ===
-===     |   __/ _ __ ___  _ __ | | ___  _   _  ___  ___      ===
-===     |   _| |  _ '  _\|  _ \| |/ _ \| | | |/ _ \/ _ \     ===
-===     |  |___  | | | | | |_) | | (_) | |_| |  __/  __/     ===
-===     |______|_| |_| |_|  __/|_|\___/\___, |\___|\___|     ===
-===                      |__|           |___/                ===
-===                                                          ===
-===      __  __                                              ===
-===     |  \/  | __ _ _ __   __ _  __ _  ___   __            ===
-===     | |\/| |/ _' | '_ \ / _' |/ _' |/ _ \ |__|   (\_/)   ===
-===     | |  | | (_| | | | | (_| | (_| |  __/ | |    (O.o)   ===
-===     |_|  |_|\__,_|_| |_|\__,_|\__, |\___| |_|    (> <)   ===
-===                               |___/                      ===
-================================================================
-	`);
-}
+// function throwTitle() {
+//     console.log(`
+// ================================================================
+// ===      ______                 _                            ===
+// ===     |   __/ _ __ ___  _ __ | | ___  _   _  ___  ___      ===
+// ===     |   _| |  _ '  _\|  _ \| |/ _ \| | | |/ _ \/ _ \     ===
+// ===     |  |___  | | | | | |_) | | (_) | |_| |  __/  __/     ===
+// ===     |______|_| |_| |_|  __/|_|\___/\___, |\___|\___|     ===
+// ===                      |__|           |___/                ===
+// ===                                                          ===
+// ===      __  __                                              ===
+// ===     |  \/  | __ _ _ __   __ _  __ _  ___   __            ===
+// ===     | |\/| |/ _' | '_ \ / _' |/ _' |/ _ \ |__|   (\_/)   ===
+// ===     | |  | | (_| | | | | (_| | (_| |  __/ | |    (O.o)   ===
+// ===     |_|  |_|\__,_|_| |_|\__,_|\__, |\___| |_|    (> <)   ===
+// ===                               |___/                      ===
+// ================================================================
+// 	`);
+// }
