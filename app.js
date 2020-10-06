@@ -5,18 +5,18 @@ const table = require("console.table");
 
 
 // make connection
-const connection = mysql.createConnection({
+let connection = mysql.createConnection({
     host: "localhost",
 
     // set port
-    port: 8080,
+    port: 3306,
 
     // set user
     user: "root",
 
     // set password
     password: "Solameandstuff1377002",
-    database: "employeeDB"
+    database: "employeedb"
 
 });
 
